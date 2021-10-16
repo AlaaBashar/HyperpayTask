@@ -1,6 +1,8 @@
 /// SCREENS
 export 'package:hyperpay_task/screens/start_screen.dart';
 export 'package:hyperpay_task/screens/benefits_screen.dart';
+export 'package:hyperpay_task/screens/main_screen.dart';
+
 
 ///PACKAGE WIDGET
 export 'package:flutter_svg/flutter_svg.dart';

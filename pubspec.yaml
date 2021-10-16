@@ -17,6 +17,9 @@ dependencies:
 
   flutter_svg: 0.22.0
   carousel_slider: ^4.0.0
+  http: 0.13.0
+  equatable: ^2.0.3
+  flutter_bloc: ^7.3.1
 
 
 dev_dependencies:
@@ -36,8 +39,6 @@ flutter:
        fonts:
          - asset: assets/fonts/Poppins-Bold.ttf
 
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
      - family: Poppins-Light
        fonts:
          - asset: assets/fonts/Poppins-Light.ttf

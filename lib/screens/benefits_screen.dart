@@ -176,7 +176,7 @@ class _BenefitsScreenState extends State<BenefitsScreen> {
   }
 
   void onSkip() {
-    ///openNewPage(context, BenefitsScreen(), popPreviousPages: true);
+    openNewPage(context, MainScreen(), popPreviousPages: true);
 
   }
 }
