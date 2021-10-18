@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hyperpay_task/database_shortly/database_helper.dart';
+import 'package:hyperpay_task/database_shortly/model_database.dart';
 import '../export.dart';
 
 class MainScreen extends StatefulWidget {
@@ -11,109 +13,228 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late ShortlyBloc bloc;
   TextEditingController urlController = TextEditingController();
-
   bool? isError = false;
+  bool? isCopied = false;
+
+  late DbHelper helper;
+  List<ShortlyModelDB>? shortlyDBList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadDate();
+  }
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       backgroundColor: ColorsHelper.OF_WIGHT,
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (_, constraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                    minWidth: constraints.maxWidth,
-                    minHeight: constraints.maxHeight),
-                child: IntrinsicHeight(
-                  child: Column(
-                    children: [
-                      const Spacer(
-                        flex: 1,
-                      ),
-                      getMainUI(),
-                      const Spacer(
-                        flex: 1,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        color: ColorsHelper.DARK_VIOLET,
-                        child: Stack(
+        child: Column(
+          children: [
+            Expanded(
+              child: LayoutBuilder(
+                builder: (_, constraints) {
+                  return SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                          minWidth: constraints.maxWidth,
+                          minHeight: constraints.maxHeight),
+                      child: IntrinsicHeight(
+                        child: Column(
                           children: [
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: SvgPicture.asset(ImageHelper.SHAPE_SVG),
+                            const Spacer(
+                              flex: 1,
+                            ),
+                            Text('Your History Link'),
+
+                            const Spacer(
+                              flex: 1,
+                            ),
+                            shortlyDBList == null || shortlyDBList!.isEmpty
+                                ? getMainUI()
+                                : Container(
+                              height: 350,
+                              child: ListView.builder(
+                                  itemCount: shortlyDBList!.length,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (_, index) {
+                                    ShortlyModelDB shortlyModel = shortlyDBList![index];
+                                    return Column(
+                                      children: [
+                                        Container(
+                                          width: getScreenWidth(context) -20.0,
+                                          child: Card(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(16.0),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text('${shortlyModel.originalLink}'),
+                                                    Spacer(flex: 4,),
+                                                            InkWell(
+                                                              onTap: (){
+                                                                helper.deleteCourse(shortlyDBList![index].id!);
+                                                                setState(() {});},
+                                                                child: SvgPicture
+                                                                    .asset(ImageHelper
+                                                                        .DEL_SVG)),
+                                                            Spacer(flex: 1,),
+                                                  ],
+                                                ),
+                                                Divider(thickness: 2,),
+                                                Text('${shortlyModel.shortlyLink}'),
+
+                                               !isCopied!
+                                                ?MaterialButton(
+                                                  onPressed: (){
+                                                    setState(() {
+                                                      isCopied = true;
+                                                    });
+                                                  },
+                                                  color: ColorsHelper.CYAN,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(4.0),
+                                                  ),
+                                                  minWidth: getScreenWidth(context,
+                                                      realWidth: true),
+                                                  height: 40,
+                                                  child: const Text(
+                                                    'COPY',
+                                                    style: TextStyle(
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.white,
+                                                        fontFamily: 'Poppins-Bold',
+                                                        fontSize: 18.0),
+                                                  ),
+                                                ):
+                                                MaterialButton(
+                                                  onPressed: (){},
+                                                  color: ColorsHelper.DARK_VIOLET,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(4.0),
+                                                  ),
+                                                  minWidth: getScreenWidth(context,
+                                                      realWidth: true),
+                                                  height: 40,
+                                                  child: const Text(
+                                                    'COPIED!',
+                                                    style: TextStyle(
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.white,
+                                                        fontFamily: 'Poppins-Bold',
+                                                        fontSize: 18.0),
+                                                  ),
+                                                ),
+
+
+                                              ],
+                                          ),
+                                            ),),
+                                        ),
+                                        SizedBox(height: 10.0,)
+                                      ],
+                                    );
+                                  }),
+                            ),
+                            const Spacer(
+                              flex: 1,
                             ),
                             Container(
-                              height: getScreenHeight(context) / 4,
-                              padding: EdgeInsets.symmetric(horizontal: 37),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              width: double.infinity,
+                              color: ColorsHelper.DARK_VIOLET,
+                              child: Stack(
                                 children: [
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: SvgPicture.asset(ImageHelper.SHAPE_SVG),
+                                  ),
                                   Container(
-                                    height: 55.0,
-                                    alignment: Alignment.center,
-                                    child: TextFormField(
-                                      controller: urlController,
-                                      textAlign: TextAlign.center,
-                                      onChanged: onChangeUrl,
-                                      keyboardType: TextInputType.url,
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter(new RegExp(r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?")  , allow: true)
+                                    height: getScreenHeight(context) / 4,
+                                    padding: EdgeInsets.symmetric(horizontal: 37),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: 55.0,
+                                          alignment: Alignment.center,
+                                          child: TextFormField(
+                                            controller: urlController,
+                                            textAlign: TextAlign.center,
+                                            onChanged: onChangeUrl,
+                                            keyboardType: TextInputType.url,
+                                            inputFormatters: [
+                                              // FilteringTextInputFormatter(
+                                              //     new RegExp(
+                                              //         r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?"),
+                                              //     allow: true)
+                                            ],
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: isError!
+                                                  ? 'Please add a link here'
+                                                  : 'Shorten a link here ...',
+                                              fillColor: ColorsHelper.WIGHT,
+                                              filled: true,
+                                              hintStyle: TextStyle(
+                                                  color: isError!
+                                                      ? ColorsHelper.RED
+                                                      : ColorsHelper.LIGHT_GRAY,
+                                                  fontFamily: 'Poppins-Light',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                                  borderSide: BorderSide(
+                                                      width: 1.0,
+                                                      color: isError!
+                                                          ? ColorsHelper.RED
+                                                          : Colors.white)),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                                  borderSide: BorderSide(
+                                                      width: 1.0,
+                                                      color: isError!
+                                                          ? ColorsHelper.RED
+                                                          : Colors.white)),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 16.0,
+                                        ),
+                                        MaterialButton(
+                                          onPressed: onShorten,
+                                          color: ColorsHelper.CYAN,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(4.0),
+                                          ),
+                                          minWidth: getScreenWidth(context,
+                                              realWidth: true),
+                                          height: 55,
+                                          child: const Text(
+                                            'SHORTEN IT!',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                fontFamily: 'Poppins-Bold',
+                                                fontSize: 18.0),
+                                          ),
+                                        ),
                                       ],
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: isError! ? 'Please add a link here':'Shorten a link here ...',
-                                        fillColor: ColorsHelper.WIGHT,
-
-                                        filled: true,
-                                        hintStyle: TextStyle(
-                                            color: isError! ? ColorsHelper.RED :  ColorsHelper.LIGHT_GRAY,
-                                            fontFamily: 'Poppins-Light',
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(4.0),
-                                            borderSide: BorderSide(
-                                                width: 1.0,
-                                                color: isError!
-                                                    ? ColorsHelper.RED
-                                                    : Colors.white)),
-                                        enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(4.0),
-                                            borderSide: BorderSide(
-                                                width: 1.0,
-                                                color: isError!
-                                                    ? ColorsHelper.RED
-                                                    : Colors.white)),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 16.0,
-                                  ),
-                                  MaterialButton(
-                                    onPressed: onShorten,
-                                    color: ColorsHelper.CYAN,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(4.0),
-                                    ),
-                                    minWidth: getScreenWidth(context,
-                                        realWidth: true),
-                                    height: 55,
-                                    child: const Text(
-                                      'SHORTEN IT!',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontFamily: 'Poppins-Bold',
-                                          fontSize: 18.0),
                                     ),
                                   ),
                                 ],
@@ -122,12 +243,12 @@ class _MainScreenState extends State<MainScreen> {
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
+            ),
+          ],
         ),
       ),
     );
@@ -137,17 +258,28 @@ class _MainScreenState extends State<MainScreen> {
   void dispose() {
     // TODO: implement dispose
     urlController.dispose();
+    bloc.close();
     super.dispose();
   }
 
   void onShorten() {
-    String? url = urlController.text ;
 
-    if(url.isEmpty) {
+    String? url = urlController.text;
+
+    if (url.isEmpty) {
       setState(() {
         isError = true;
+         isCopied = true;
       });
+
     }
+
+      setState(() {
+        FetchSuccess.url=url;
+      });
+    //bloc.add(FetchUrlEvent(url));
+
+
   }
 
   Widget getMainUI() => Column(
@@ -179,4 +311,144 @@ class _MainScreenState extends State<MainScreen> {
         isError = false;
       });
   }
+
+  void loadDate() async {
+
+    DbHelper? dbHelper = DbHelper();
+
+    shortlyDBList = await dbHelper.getAllShortlyLinks();
+
+    print('============ ${shortlyDBList?.length}');
+    setState(() {});
+  }
 }
+/*
+* Expanded(
+              child: LayoutBuilder(
+                builder: (_, constraints) {
+                  return SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                          minWidth: constraints.maxWidth,
+                          minHeight: constraints.maxHeight),
+                      child: IntrinsicHeight(
+                        child: Column(
+                          children: [
+                            const Spacer(
+                              flex: 1,
+                            ),
+                            shortlyDBList == null || shortlyDBList!.isEmpty
+                                ? getMainUI()
+                                : Container(
+                                  height: 350,
+                                  child: ListView.builder(
+                                      itemCount: shortlyDBList!.length,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder: (_, index) {
+                                        ShortlyModelDB shortlyModel = shortlyDBList![index];
+                                        return Text('${shortlyModel.shortlyLink}');
+                                      }),
+                                ),
+                            const Spacer(
+                              flex: 1,
+                            ),
+                            Container(
+                              width: double.infinity,
+                              color: ColorsHelper.DARK_VIOLET,
+                              child: Stack(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: SvgPicture.asset(ImageHelper.SHAPE_SVG),
+                                  ),
+                                  Container(
+                                    height: getScreenHeight(context) / 4,
+                                    padding: EdgeInsets.symmetric(horizontal: 37),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: 55.0,
+                                          alignment: Alignment.center,
+                                          child: TextFormField(
+                                            controller: urlController,
+                                            textAlign: TextAlign.center,
+                                            onChanged: onChangeUrl,
+                                            keyboardType: TextInputType.url,
+                                            inputFormatters: [
+                                              // FilteringTextInputFormatter(
+                                              //     new RegExp(
+                                              //         r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?"),
+                                              //     allow: true)
+                                            ],
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: isError!
+                                                  ? 'Please add a link here'
+                                                  : 'Shorten a link here ...',
+                                              fillColor: ColorsHelper.WIGHT,
+                                              filled: true,
+                                              hintStyle: TextStyle(
+                                                  color: isError!
+                                                      ? ColorsHelper.RED
+                                                      : ColorsHelper.LIGHT_GRAY,
+                                                  fontFamily: 'Poppins-Light',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4.0),
+                                                  borderSide: BorderSide(
+                                                      width: 1.0,
+                                                      color: isError!
+                                                          ? ColorsHelper.RED
+                                                          : Colors.white)),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4.0),
+                                                  borderSide: BorderSide(
+                                                      width: 1.0,
+                                                      color: isError!
+                                                          ? ColorsHelper.RED
+                                                          : Colors.white)),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 16.0,
+                                        ),
+                                        MaterialButton(
+                                          onPressed: onShorten,
+                                          color: ColorsHelper.CYAN,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(4.0),
+                                          ),
+                                          minWidth: getScreenWidth(context,
+                                              realWidth: true),
+                                          height: 55,
+                                          child: const Text(
+                                            'SHORTEN IT!',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                fontFamily: 'Poppins-Bold',
+                                                fontSize: 18.0),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+* */

@@ -13,3 +13,12 @@ export 'package:hyperpay_task/utils/image_helper.dart';
 export 'package:hyperpay_task/utils/colors_helper.dart';
 export 'package:hyperpay_task/utils/util.dart';
 
+
+///BLOC
+export 'package:hyperpay_task/bloc_shortly/shortly_bloc.dart';
+export 'package:flutter_bloc/flutter_bloc.dart';
+export 'package:hyperpay_task/bloc_shortly/shortly_events.dart';
+export 'package:hyperpay_task/bloc_shortly/shortly_states.dart';
+
+
+

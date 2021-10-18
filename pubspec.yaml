@@ -9,17 +9,22 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+
   flutter:
     sdk: flutter
 
 
   cupertino_icons: ^1.0.2
-
   flutter_svg: 0.22.0
   carousel_slider: ^4.0.0
   http: 0.13.0
   equatable: ^2.0.3
   flutter_bloc: ^7.3.1
+  sqflite: ^2.0.0+4
+  path: ^1.8.0
+
+
+
 
 
 dev_dependencies:

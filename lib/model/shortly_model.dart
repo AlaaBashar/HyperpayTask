@@ -1,18 +1,18 @@
 class ShortlyModel {
   bool ok;
-  Result result;
+  ShortlyResult result;
 
   ShortlyModel({required this.ok, required this.result});
 
   factory ShortlyModel.fromJson(Map<String, dynamic> json) {
     return ShortlyModel(
       ok: json["ok"],
-      result: Result.fromJson(json["result"]),
+      result: ShortlyResult.fromJson(json["result"]),
     );
   }
 }
 
-class Result {
+class ShortlyResult {
   String code;
   String shortLink;
   String fullShortLink;
@@ -24,7 +24,7 @@ class Result {
   String fullShareLink;
   String originalLink;
 
-  Result(
+  ShortlyResult(
       {required this.code,
       required this.shortLink,
       required this.fullShortLink,
@@ -36,18 +36,18 @@ class Result {
       required this.fullShareLink,
       required this.originalLink});
 
-  factory Result.fromJson(Map<String, dynamic> json) {
-    return Result(
+  factory ShortlyResult.fromJson(Map<String, dynamic> json) {
+    return ShortlyResult(
       code: json["code"],
-      shortLink: json["shortLink"],
-      fullShortLink: json["fullShortLink"],
-      shortLink2: json["shortLink2"],
-      fullShortLink2: json["fullShortLink2"],
-      shortLink3: json["shortLink3"],
-      fullShortLink3: json["fullShortLink3"],
-      shareLink: json["shareLink"],
-      fullShareLink: json["fullShareLink"],
-      originalLink: json["originalLink"],
+      shortLink: json["short_link"],
+      fullShortLink: json["full_short_link"],
+      shortLink2: json["short_link2"],
+      fullShortLink2: json["full_short_link2"],
+      shortLink3: json["short_link3"],
+      fullShortLink3: json["full_short_link3"],
+      shareLink: json["share_link"],
+      fullShareLink: json["full_share_link"],
+      originalLink: json["original_link"],
     );
   }
 }
