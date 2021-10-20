@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyperpay_task/export.dart';
 import 'package:hyperpay_task/repository/shortly_repository.dart';
+import 'package:hyperpay_task/screens/test.dart';
 
 import 'bloc_shortly/shortly_bloc.dart';
 import 'bloc_shortly/shortly_states.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
           )),
       home: BlocProvider(
         create: (context) => ShortlyBloc(InitialState(), ShortlyRepository()),
-        child: StartScreen(),
+        child: MainScreen(),
       ),
 
       //StartScreen(),

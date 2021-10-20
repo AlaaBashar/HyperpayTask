@@ -6,38 +6,33 @@ import 'package:hyperpay_task/repository/shortly_repository.dart';
 
 class ShortlyBloc extends Bloc<ShortlyEvents,ShortlyStates>{
   ShortlyRepository repo;
+
   ShortlyBloc(ShortlyStates initialState,this.repo) : super(initialState);
+
+  static ShortlyBloc get(context) =>BlocProvider.of(context);
 
   @override
   Stream<ShortlyStates> mapEventToState(ShortlyEvents event) async*{
-
     if(event is DoFetchEvents){
 
       try{
         yield LoadingState();
         ShortlyResult? shortly = await repo.fetchShortlyData(FetchSuccess.url.toString());
         yield FetchSuccess(shortly!);
-
       }
       catch(e){
-        yield ErrorState(e.toString());
-      }
-    }
-
+        yield ErrorState(e.toString());}}
     if(event is FetchUrlEvent){
-
       try{
         yield LoadingState();
-        ShortlyResult? shortly = await repo.fetchShortlyData(FetchSuccess.url.toString());
+        ShortlyResult? shortly = await repo.fetchShortlyData(event.url.toString());
         yield FetchUrlState(shortly!);
 
       }catch(e){
         yield ErrorState(e.toString());
       }
-
-
-
     }
+
 
   }
 }

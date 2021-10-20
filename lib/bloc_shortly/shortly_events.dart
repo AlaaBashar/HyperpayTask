@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
- class ShortlyEvents extends Equatable{
+ abstract class ShortlyEvents extends Equatable{
   @override
   // TODO: implement props
   List<Object?> get props => [];

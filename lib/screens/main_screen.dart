@@ -31,6 +31,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       backgroundColor: ColorsHelper.OF_WIGHT,
       body: SafeArea(
@@ -58,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
                             shortlyDBList == null || shortlyDBList!.isEmpty
                                 ? getMainUI()
                                 : Container(
-                                    height: 300,
+                                    height: 500,
                                     child: ListView.builder(
                                         itemCount: shortlyDBList!.length,
                                         physics: NeverScrollableScrollPhysics(),
@@ -277,7 +279,10 @@ class _MainScreenState extends State<MainScreen> {
                                           height: 16.0,
                                         ),
                                         MaterialButton(
-                                          onPressed: onShorten,
+                                          onPressed: (){
+                                            onShorten();
+
+                                          },
                                           color: ColorsHelper.CYAN,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
@@ -337,6 +342,8 @@ class _MainScreenState extends State<MainScreen> {
       FetchSuccess.url = url;
     });
     //bloc.add(FetchUrlEvent(url));
+    ShortlyBloc.get(context).add(FetchUrlEvent(url));
+
   }
 
   Widget getMainUI() => Column(
