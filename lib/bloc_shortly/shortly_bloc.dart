@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyperpay_task/bloc_shortly/shortly_events.dart';
 import 'package:hyperpay_task/bloc_shortly/shortly_states.dart';
@@ -22,7 +23,9 @@ class ShortlyBloc extends Bloc<ShortlyEvents,ShortlyStates>{
       }
       catch(e){
         yield ErrorState(e.toString());}}
+
     if(event is FetchUrlEvent){
+      print('-----------------------------${event.url}');
       try{
         yield LoadingState();
         ShortlyResult? shortly = await repo.fetchShortlyData(event.url.toString());

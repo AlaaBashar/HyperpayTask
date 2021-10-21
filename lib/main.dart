@@ -36,10 +36,11 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Poppins-Light',
             ),
           )),
-      home: BlocProvider(
-        create: (context) => ShortlyBloc(InitialState(), ShortlyRepository()),
-        child: StartScreen(),
-      ),
+      home: MultiBlocProvider(
+          providers: [
+               BlocProvider<ShortlyBloc>(create: (context) => ShortlyBloc(InitialState(), ShortlyRepository()),)
+          ],
+          child: StartScreen()),
 
       //StartScreen(),
     );

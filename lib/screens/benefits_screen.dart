@@ -11,8 +11,10 @@ class BenefitsScreen extends StatefulWidget {
 }
 
 class _BenefitsScreenState extends State<BenefitsScreen> {
+
   final CarouselController _controllerSlider = CarouselController();
   int? _currentIndex = 0;
+
 
   List<Map<String, dynamic>> _benefitsList = [
     {

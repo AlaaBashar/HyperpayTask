@@ -9,10 +9,18 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
+  late ShortlyBloc bloc;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+  }
+  @override
+  void dispose() {
+    bloc.close();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -104,4 +112,5 @@ class _StartScreenState extends State<StartScreen> {
   void onStart() {
     openNewPage(context, BenefitsScreen(), popPreviousPages: true);
   }
+
 }
