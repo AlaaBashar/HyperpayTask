@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hyperpay_task/database_shortly/database_helper.dart';
-import 'package:hyperpay_task/database_shortly/model_database.dart';
 import '../export.dart';
 
 
@@ -20,16 +18,21 @@ class _MainScreenState extends State<MainScreen> {
   bool? isError = false;
   bool? isCopied = false;
   int? selectId;
-
   late DbHelper helper;
   List<ShortlyModelDB>? shortlyDBList;
-
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     loadDate();
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    urlController.dispose();
+    bloc.close();
+    super.dispose();
   }
 
   @override
@@ -51,124 +54,128 @@ class _MainScreenState extends State<MainScreen> {
                       child: IntrinsicHeight(
                         child: Column(
                           children: [
+
                             const Spacer(
                               flex: 1,
                             ),
-                            Text('Your History Link'),
                             const Spacer(
                               flex: 1,
                             ),
                             shortlyDBList == null || shortlyDBList!.isEmpty
                                 ? getMainUI()
-                                : Container(
-                                    height: 500,
-                                    child: ListView.builder(
-                                        itemCount: shortlyDBList!.length,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemBuilder: (_, index) {
-                                          ShortlyModelDB shortlyModel =
-                                              shortlyDBList![index];
-                                          return Column(
-                                            children: [
-                                              Container(
-                                                width: getScreenWidth(context) -
-                                                    20.0,
-                                                child: Card(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            16.0),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                                '${shortlyModel.originalLink}'),
-                                                            Spacer(
-                                                              flex: 4,
-                                                            ),
-                                                            InkWell(
-                                                                onTap: () {
-                                                                  helper.deleteCourse(
-                                                                      shortlyDBList![
-                                                                              index]
-                                                                          .id!);
-                                                                  setState(
-                                                                      () {});
-                                                                },
-                                                                child: SvgPicture
-                                                                    .asset(ImageHelper
-                                                                        .DEL_SVG)),
-                                                            Spacer(
-                                                              flex: 1,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Divider(
-                                                          thickness: 2,
-                                                        ),
-                                                        Text(
-                                                            '${shortlyModel.shortlyLink}'),
-                                                         MaterialButton(
-                                                                onPressed: () {
+                                : Column(
+                                  children: [
+                                    const Text('Your history link',style: TextStyle(fontFamily: 'Poppins-Bold'),),
+                                   const SizedBox(height: 30.0,),
 
-                                                                  Clipboard.setData(ClipboardData(
-                                                                          text: shortlyDBList![index].shortlyLink)).then((value) {final snackBar = SnackBar(
-                                                                      content: Text(
-                                                                          'Copied the short link'),
-                                                                      action:
-                                                                          SnackBarAction(
-                                                                        label:
-                                                                            'Undo',
-                                                                        onPressed:
-                                                                            () {},
-                                                                      ),
-                                                                    );
-                                                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);});
-                                                                  setState(() {isCopied = true;});
+                                    Container(
+                                      height: 500,
+                                      child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: shortlyDBList!.length,
+                                          itemBuilder: (_, index) {
+                                            ShortlyModelDB shortlyModel =
+                                                shortlyDBList![index];
+                                            return Column(
+                                              children: [
+                                                Container(
+                                                  width: getScreenWidth(context) -
+                                                      20.0,
+                                                  child: Card(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16.0),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                  '${shortlyModel.originalLink}'),
+                                                              Spacer(
+                                                                flex: 4,
+                                                              ),
+                                                              GestureDetector(
+                                                                  onTap: () {
+                                                                     helper.deleteShortLink(shortlyDBList![index].id!);
 
-                                                                    },
-                                                                color:ColorsHelper.CYAN,
-                                                                shape: RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              4.0),
-                                                                ),
-                                                                minWidth: getScreenWidth(context, realWidth: true),
-                                                                height: 40,
-                                                                child: const Text(
-                                                                  'COPY',
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontFamily:
-                                                                          'Poppins-Bold',
-                                                                      fontSize:
-                                                                          18.0),
-                                                                ),)
+                                                                  },
+                                                                  child: SvgPicture
+                                                                      .asset(ImageHelper
+                                                                          .DEL_SVG)),
+                                                              Spacer(
+                                                                flex: 1,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Divider(
+                                                            thickness: 2,
+                                                          ),
+                                                          Text(
+                                                              '${shortlyModel.shortlyLink}'),
+                                                           MaterialButton(
+                                                                  onPressed: () {
 
-                                                      ],
+                                                                    Clipboard.setData(ClipboardData(
+                                                                            text: shortlyDBList![index].shortlyLink)).then((value) {
+                                                                              final snackBar = SnackBar(
+                                                                        content: Text(
+                                                                            'Copied the short link'),
+                                                                        action:
+                                                                            SnackBarAction(
+                                                                          label:
+                                                                              'Undo',
+                                                                          onPressed:
+                                                                              () {},
+                                                                        ),
+                                                                      );
+                                                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);});
+                                                                    setState(() {isCopied = true;});
+
+                                                                      },
+                                                                  color:ColorsHelper.CYAN,
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                                4.0),
+                                                                  ),
+                                                                  minWidth: getScreenWidth(context, realWidth: true),
+                                                                  height: 40,
+                                                                  child: const Text(
+                                                                    'COPY',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontFamily:
+                                                                            'Poppins-Bold',
+                                                                        fontSize:
+                                                                            18.0),
+                                                                  ),)
+
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              SizedBox(
-                                                height: 10.0,
-                                              )
-                                            ],
-                                          );
-                                        }),
-                                  ),
+                                                SizedBox(
+                                                  height: 10.0,
+                                                )
+                                              ],
+                                            );
+                                          }),
+                                    ),
+                                  ],
+                                ),
                             const Spacer(
                               flex: 1,
                             ),
@@ -265,6 +272,7 @@ class _MainScreenState extends State<MainScreen> {
                                                 fontSize: 18.0),
                                           ),
                                         ),
+
                                       ],
                                     ),
                                   ),
@@ -285,13 +293,6 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    urlController.dispose();
-    bloc.close();
-    super.dispose();
-  }
 
   void onShorten() {
     String? url = urlController.text;
@@ -302,12 +303,27 @@ class _MainScreenState extends State<MainScreen> {
         isCopied = true;
       });
     }
+   else{
 
-    setState(() {
-      FetchSuccess.url = url;
-    });
-    //bloc.add(FetchUrlEvent(url));
-    ShortlyBloc.get(context).add(FetchUrlEvent(url));
+      ShortlyBloc.get(context).add(FetchUrlEvent(url));
+
+
+      final snackBar = SnackBar(
+        content: Text(
+            'Copied the short link'),
+        action:
+        SnackBarAction(
+          label:
+          'Undo',
+          onPressed:
+              () {},
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+
+
+    }
 
   }
 

@@ -17,12 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-
         BlocProvider<ShortlyBloc>(create: (context) => ShortlyBloc(InitialState(), ShortlyRepository()),)
-
-
-
-
       ], child:  MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,

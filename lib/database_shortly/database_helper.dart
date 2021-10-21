@@ -49,7 +49,7 @@ class DbHelper{
   }
 
 
-  Future<int> deleteCourse(int id) async{
+  Future<int> deleteShortLink(int id) async{
     Database? dbClient = await createDatabase();
     return dbClient!.delete('$nameTable',where: 'id = ?',whereArgs:[id] );
   }
