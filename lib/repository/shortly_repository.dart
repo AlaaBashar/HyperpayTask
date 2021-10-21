@@ -21,15 +21,11 @@ class ShortlyRepository {
     ShortlyModel shortlyModel = ShortlyModel.fromJson(resMap);
 
     if (shortlyModel.ok) {
-
       ShortlyModelDB shortlyModelDB = ShortlyModelDB();
-
       shortlyModelDB
         ..originalLink = url
         ..shortlyLink = shortlyModel.result.fullShortLink;
-
       await _helper!.insertDate(shortlyModelDB);
-
       return ShortlyResult.fromJson(resMap['result']);
     }
   }

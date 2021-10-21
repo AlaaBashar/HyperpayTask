@@ -101,10 +101,12 @@ class _MainScreenState extends State<MainScreen> {
                                                               Spacer(
                                                                 flex: 4,
                                                               ),
-                                                              GestureDetector(
+                                                              InkWell(
                                                                   onTap: () {
+                                                                     setState(() {
                                                                      helper.deleteShortLink(shortlyDBList![index].id!);
 
+                                                                     });
                                                                   },
                                                                   child: SvgPicture
                                                                       .asset(ImageHelper
