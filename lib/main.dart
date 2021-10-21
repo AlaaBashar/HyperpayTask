@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           )),
       home: BlocProvider(
         create: (context) => ShortlyBloc(InitialState(), ShortlyRepository()),
-        child: MainScreen(),
+        child: StartScreen(),
       ),
 
       //StartScreen(),
