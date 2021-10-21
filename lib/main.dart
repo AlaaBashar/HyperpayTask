@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hyperpay_task/export.dart';
 import 'package:hyperpay_task/repository/shortly_repository.dart';
-import 'package:hyperpay_task/screens/test.dart';
 
 import 'bloc_shortly/shortly_bloc.dart';
 import 'bloc_shortly/shortly_states.dart';
@@ -16,7 +15,15 @@ void main()  {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiBlocProvider(
+      providers: [
+
+        BlocProvider<ShortlyBloc>(create: (context) => ShortlyBloc(InitialState(), ShortlyRepository()),)
+
+
+
+
+      ], child:  MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -36,13 +43,10 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Poppins-Light',
             ),
           )),
-      home: MultiBlocProvider(
-          providers: [
-               BlocProvider<ShortlyBloc>(create: (context) => ShortlyBloc(InitialState(), ShortlyRepository()),)
-          ],
-          child: StartScreen()),
+      home: StartScreen(),
 
       //StartScreen(),
+    ),
     );
   }
 }

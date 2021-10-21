@@ -4,6 +4,7 @@ import 'package:hyperpay_task/bloc_shortly/shortly_events.dart';
 import 'package:hyperpay_task/bloc_shortly/shortly_states.dart';
 import 'package:hyperpay_task/model/shortly_model.dart';
 import 'package:hyperpay_task/repository/shortly_repository.dart';
+import '../export.dart';
 
 class ShortlyBloc extends Bloc<ShortlyEvents,ShortlyStates>{
   ShortlyRepository repo;

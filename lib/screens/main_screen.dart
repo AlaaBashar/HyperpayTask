@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hyperpay_task/database_shortly/database_helper.dart';
 import 'package:hyperpay_task/database_shortly/model_database.dart';
-import 'package:hyperpay_task/repository/shortly_repository.dart';
 import '../export.dart';
+
+
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -114,12 +115,11 @@ class _MainScreenState extends State<MainScreen> {
                                                         ),
                                                         Text(
                                                             '${shortlyModel.shortlyLink}'),
-                                                        !isCopied!  || selectId!  == index  ? MaterialButton(
+                                                         MaterialButton(
                                                                 onPressed: () {
 
                                                                   Clipboard.setData(ClipboardData(
-                                                                          text: shortlyDBList![index]
-                                                                              .shortlyLink)).then((value) {final snackBar = SnackBar(
+                                                                          text: shortlyDBList![index].shortlyLink)).then((value) {final snackBar = SnackBar(
                                                                       content: Text(
                                                                           'Copied the short link'),
                                                                       action:
@@ -156,42 +156,7 @@ class _MainScreenState extends State<MainScreen> {
                                                                       fontSize:
                                                                           18.0),
                                                                 ),)
-                                                            : MaterialButton(
-                                                                onPressed:
-                                                                    () {
-                                                                      setState(() {isCopied = false;});
 
-                                                                    },
-                                                                color: ColorsHelper
-                                                                    .DARK_VIOLET,
-                                                                shape:
-                                                                    RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              4.0),
-                                                                ),
-                                                                minWidth:
-                                                                    getScreenWidth(
-                                                                        context,
-                                                                        realWidth:
-                                                                            true),
-                                                                height: 40,
-                                                                child:
-                                                                    const Text(
-                                                                  'COPIED!',
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontFamily:
-                                                                          'Poppins-Bold',
-                                                                      fontSize:
-                                                                          18.0),
-                                                                ),
-                                                              ),
                                                       ],
                                                     ),
                                                   ),
