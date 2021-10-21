@@ -20,7 +20,7 @@ class DbHelper{
       return _db;
     }
     //define the path to the database
-    String path = join(await getDatabasesPath(), 'test.db');
+    String path = join(await getDatabasesPath(), 'short.db');
     _db = await openDatabase(path,version: 1,onCreate: (Database db, int version){
       db.execute("CREATE TABLE $nameTable(id integer primary key autoincrement, $shortlyLink varchar(50) , $originalLink varchar(50))");
     });
