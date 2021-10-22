@@ -103,10 +103,13 @@ class _MainScreenState extends State<MainScreen> {
                                                               ),
                                                               InkWell(
                                                                   onTap: () {
-                                                                     setState(() {
-                                                                     helper.deleteShortLink(shortlyDBList![index].id!);
+                                                                    try{
+                                                                      setState(() {
+                                                                        helper.deleteShortLink(shortlyDBList![index].id!);
 
-                                                                     });
+                                                                      });
+                                                                    }
+                                                                    catch(e){print(e);}
                                                                   },
                                                                   child: SvgPicture
                                                                       .asset(ImageHelper
@@ -124,21 +127,25 @@ class _MainScreenState extends State<MainScreen> {
                                                            MaterialButton(
                                                                   onPressed: () {
 
-                                                                    Clipboard.setData(ClipboardData(
-                                                                            text: shortlyDBList![index].shortlyLink)).then((value) {
-                                                                              final snackBar = SnackBar(
-                                                                        content: Text(
-                                                                            'Copied the short link'),
-                                                                        action:
-                                                                            SnackBarAction(
-                                                                          label:
-                                                                              'Undo',
-                                                                          onPressed:
-                                                                              () {},
-                                                                        ),
-                                                                      );
-                                                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);});
-                                                                    setState(() {isCopied = true;});
+                                                                    try{
+                                                                      Clipboard.setData(ClipboardData(text: shortlyDBList![index].shortlyLink)).then((value) {
+                                                                        final snackBar = SnackBar(
+                                                                          content: Text(
+                                                                              'Copied the short link'),
+                                                                          action: SnackBarAction(
+                                                                            label:
+                                                                            'Undo',
+                                                                            onPressed:
+                                                                                () {},
+                                                                          ),
+                                                                        );
+                                                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);});
+                                                                      setState(() {isCopied = true;});
+                                                                    } catch(e){
+
+                                                                      print(e);
+
+                                                                    }
 
                                                                       },
                                                                   color:ColorsHelper.CYAN,
