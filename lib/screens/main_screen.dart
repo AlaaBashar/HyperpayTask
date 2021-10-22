@@ -319,7 +319,7 @@ class _MainScreenState extends State<MainScreen> {
 
       final snackBar = SnackBar(
         content: Text(
-            'Copied the short link'),
+            'The link is shorten'),
         action:
         SnackBarAction(
           label:
