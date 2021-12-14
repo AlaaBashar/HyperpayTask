@@ -51,3 +51,33 @@ class ShortlyResult {
     );
   }
 }
+
+class UserModel{
+  String? username;
+  String? email;
+  String? phone;
+  String? uID;
+
+  UserModel({
+    this.username,
+    this.email,
+    this.phone,
+    this.uID
+  });
+
+  UserModel.fromJson(Map<String , dynamic>? json){
+    username = json!['username']!;
+    email = json['email']!;
+    phone = json['phone']!;
+    uID = json['uID']!;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'username': username,
+      'email': email,
+      'phone': phone,
+      'uID': uID,
+    };
+  }
+}

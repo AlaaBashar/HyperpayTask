@@ -8,9 +8,6 @@ abstract class ShortlyStates extends Equatable {
 }
 
 class InitialState extends ShortlyStates {}
-
-class LoadingState extends ShortlyStates {}
-
 class FetchUrlState extends ShortlyStates {
   final ShortlyResult shortly;
 
@@ -18,16 +15,34 @@ class FetchUrlState extends ShortlyStates {
     this.shortly,
   );
 }
-
 class ErrorState extends ShortlyStates {
   final String message;
 
   ErrorState(this.message);
 }
+class LoadingState extends ShortlyStates {}
+class LogoutState extends ShortlyStates {}
 
-class FetchSuccess extends ShortlyStates {
-  static String? url;
-  final ShortlyResult shortly;
 
-  FetchSuccess(this.shortly);
-}
+
+
+
+
+// class LoginAuthState extends ShortlyStates {
+//   final String uid;
+//
+//   LoginAuthState(this.uid);
+// }
+// class RegisterAuthState extends ShortlyStates {
+//   final String uid;
+//
+//   RegisterAuthState(this.uid);
+// }
+
+
+
+
+
+
+
+

@@ -8,14 +8,11 @@ class DbHelper{
   String shortlyLink= "shortlyLink";
   String originalLink= "originalLink";
   String isCopy= "isCopy";
-
   static final DbHelper _instance = DbHelper.internal();
   factory DbHelper() => _instance;
   DbHelper.internal();
   static Database? _db;
-
   Future<Database?> createDatabase() async{
-
     if(_db != null){
       return _db;
     }
@@ -26,8 +23,6 @@ class DbHelper{
     });
     return _db;
   }
-
-
   Future<List<ShortlyModelDB>> getAllShortlyLinks() async{
 
     List<ShortlyModelDB> shortlyList ;
@@ -42,13 +37,10 @@ class DbHelper{
 
 
   }
-
   Future<int> insertDate(ShortlyModelDB shortly) async{
     Database? db = await createDatabase();
     return await db!.insert('$nameTable', shortly.toJson());
   }
-
-
   Future<int> deleteShortLink(int id) async{
     Database? dbClient = await createDatabase();
     return dbClient!.delete('$nameTable',where: 'id = ?',whereArgs:[id] );

@@ -37,8 +37,7 @@ class _TestState extends State<Test> {
 
   @override
   Widget build(BuildContext context) {
-    bloc = BlocProvider.of<ShortlyBloc>(context);
-    bloc.add(DoFetchEvents());
+
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -79,7 +78,7 @@ class _TestState extends State<Test> {
   }
 
   void onCreate() async {
-    ShortlyBloc.get(context).add(FetchUrlEvent(urlController.text));
+    ///ShortlyBloc.get(context).add(FetchUrlEvent(urlController.text));
 
 
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../export.dart';
+import '../../export.dart';
 
 class BenefitsScreen extends StatefulWidget {
   const BenefitsScreen({Key? key}) : super(key: key);

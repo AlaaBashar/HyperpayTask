@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "453949484708",
+    "project_id": "shortlyfirebase",
+    "storage_bucket": "shortlyfirebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453949484708:android:13116550de16f76e310031",
+        "android_client_info": {
+          "package_name": "com.ehyperpay.task.hyperpay_task"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453949484708-ik0jsc343f2g0i3b1udcqts2hrlknsqu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHikcWRYZG7tXKP2SBkpx_g2HP2t7RcC4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453949484708-ik0jsc343f2g0i3b1udcqts2hrlknsqu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
