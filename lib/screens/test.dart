@@ -78,6 +78,10 @@ class _TestState extends State<Test> {
   }
 
   void onCreate() async {
+
+
+    ///ShortlyBloc.get(context).add(FetchUrlEvent(urlController.text));
+
     ///ShortlyBloc.get(context).add(FetchUrlEvent(urlController.text));
 
 
