@@ -7,7 +7,7 @@ import 'package:hyperpay_task/utils/SharedPrevrences.dart';
 import '../export.dart';
 
 class ShortlyBloc extends Bloc<ShortlyEvents, ShortlyStates> {
-  ShortlyRepository repo;
+  ShortlyRepository repo ;
   AuthenticationService auth;
 
   ShortlyBloc(ShortlyStates initialState, this.repo, this.auth)
